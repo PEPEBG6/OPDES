@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url("/static/imagenes/fondo.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+        .card-bg-white {
+            background-color: rgba(231, 226, 226, 0.151);
+            top: 40px;
+            height:100%;
+            width: 157%;
+            position: relative;
+            left: 30px;
+            
+        }
+        .card-img{
+            top: 120px;
+            height: 300px;
+            position: relative;
+            
+        }
+        .card{
+
+            top: 40px;
+            height:100%;
+            width: 157%;
+            position: relative;
+            right: 140px;
+           
+        }
+        .btn{
+            background-color:#30645c;
+        }
+        .Logonegro{
+            width: 200px;
+            height: 200px;
+            position: relative;
+            left: 130px;
+        }
+        .form-label{
+            color: black;
+        }
+        .btn-primary:active {
+            background-color: #204035; /* Cambia el color del botón cuando está activo */
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="container-fluid d-flex align-items-center justify-content-center p-2">
+        <div class="row ">
+            <div class="col-md-6 p-0">
+                <div class="card shadow">
+                    <img src="/static/imagenes/Logo.png" class="Logonegro">
+                    <div class="card-body text-light">
+                        <form>
+                            <div class="container col">
+                                <div class="mb-4">
+                                    <label for="username" class="form-label">Usuario:</label>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su usuario" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="password" class="form-label">Contraseña:</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su Contraseña" required>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a class="btn btn-success btn-1" type="button" href="/Inicio_pagina">Iniciar Sesión</a>
+                                    <a class="btn btn-success" type="button" href="/Registro">Registrarse</a>
+                                </div>
+                                <div class="text-center p-2">
+                                    <a href="">¿Olvidaste Tu Contraseña?</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 p-0">
+                <div class="card card-bg-white border-0 shadow">
+                    <img src="/static/imagenes/Imagen2.png" class="card-img" alt="Imagen de fondo">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
