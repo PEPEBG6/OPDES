@@ -5,14 +5,14 @@ body{
     background-size: 100%; 
 }
 .Logo_Blanco{
-    top: 120px;
+    top: 130px;
     position: relative;
-    left: 42%;
+    left: 30%;
 }
 .Inicio_sesion{
     color: rgb(255, 255, 255);
-    top: 420px;
+    top: 400px;
     position: relative;
-    left: 69%;
+    left: 50%;
 }
 

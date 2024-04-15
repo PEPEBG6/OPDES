@@ -40,47 +40,65 @@
             background-color:#30645c;
         }
         .Logonegro{
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 120px;
             position: relative;
-            left: 130px;
+            left: 150px;
         }
         .form-label{
             color: black;
         }
         .btn-primary:active {
-            background-color: #204035; /* Cambia el color del botón cuando está activo */
+            background-color: #204035; 
         }
         
     </style>
 </head>
-<body>
-    
-    <div class="container-fluid d-flex align-items-center justify-content-center p-2">
+<div class="container-fluid d-flex align-items-center justify-content-center p-2">
         <div class="row ">
             <div class="col-md-6 p-0">
                 <div class="card shadow">
-                    <img src="/static/imagenes/Logo.png" class="Logonegro">
+                    <img src="/static/imagenes/LOGO NEGRO COMPLETO.png" class="Logonegro">
                     <div class="card-body text-light">
-                        <form>
-                            <div class="container col">
-                                <div class="mb-4">
-                                    <label for="username" class="form-label">Usuario:</label>
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su usuario" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="password" class="form-label">Contraseña:</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su Contraseña" required>
-                                </div>
-                                <div class="d-grid gap-2">
-                                    <a class="btn btn-success btn-1" type="button" href="/Inicio_pagina">Iniciar Sesión</a>
-                                    <a class="btn btn-success" type="button" href="/Registro">Registrarse</a>
-                                </div>
-                                <div class="text-center p-2">
-                                    <a href="">¿Olvidaste Tu Contraseña?</a>
-                                </div>
+                        
+                        <form method="POST" action="/Login">
+                            <div class="mb-4">
+                                <label for="correo" class="form-label">Correo:</label>
+                                <input type="email" class="form-control" id="correo" name="correo" placeholder="Ingrese su correo" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="contraseña" class="form-label">Contraseña:</label>
+                                <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Ingrese su Contraseña" required>
+                            </div>
+                            {% if error_message %}
+                                <script>
+                                    Swal.fire({
+                                        title: "{{ error_message }}",
+                                        icon: "error",
+                                        showClass: {
+                                            popup: `
+                                                animate__animated
+                                                animate__fadeInUp
+                                                animate__faster
+                                            `
+                                        },
+                                        hideClass: {
+                                            popup: `
+                                                animate__animated
+                                                animate__fadeOutDown
+                                                animate__faster
+                                            `
+                                        }
+                                    });
+                                </script>
+                            {% endif %}
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-success btn-1" type="submit">Iniciar Sesión</button>
+                                <a class="btn btn-success" type="button" href="/Registro">Registrarse</a>
                             </div>
                         </form>
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -93,5 +111,6 @@
     </div>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
