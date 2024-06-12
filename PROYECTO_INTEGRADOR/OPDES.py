@@ -9,7 +9,7 @@ app.config['MYSQL_USER']='root'
 app.config['MYSQL_PASSWORD']=''
 app.config['MYSQL_DB']='opdes'
 app.secret_key= 'mysecrety'
-bcrypt = Bcrypt(app)
+Bcrypt=Bcrypt(app)
 mysql= MySQL(app)
 
 
@@ -17,13 +17,50 @@ mysql= MySQL(app)
 def Inicio():
     return render_template('Inicio.html')
 
-@app.route('/Admin')  #Se creo rurta Administrador
-def Admin ():
-    return render_template('Admin.html')
+#Esta es la ruta para el registro de un proyecto 
+@app.route('/Registro_Proyecto')
+def Registro_Proyecto():
+    return render_template('Registro_Proyecto.html')
 
-@app.route('/Visualizador') #Se creo ruta de Visualizador
-def Visualizador ():
+#ESTA RUTA ES PARA ADMINISTRADOR 
+@app.route('/Administrador')
+def Administrador():
+    return render_template('admin.html')
+
+
+@app.route('/AdminProyectos')
+def AdminProyectos():
+    return render_template('adminProyectos.html')
+
+@app.route('/AdminInicio')
+def AdminInicio():
+    return render_template('adminInicio.html')
+
+
+
+#ESTA RUTA ES PARA EL ROL VISUALIZADOR DE PROYECTOS
+@app.route('/Visualizador')
+def Visualizador():
     return render_template('Visualizador.html')
+
+@app.route('/Visualizadorperfil')
+def VisualizadorPerfil():
+    return render_template('VisualizadorPerfil.html')
+
+
+@app.route('/VisualizadorProyector')
+def VisualizadorProyectos():
+    return render_template('VisualizadorProyectos.html')
+
+@app.route('/VisualizadorNotificaciones')
+def VisualizadorNotificaciones():
+    return render_template('VisualizadorNotificaciones.html')
+
+@app.route('/VisualizadorMasProyectos')
+def VisualizadorMasProyectos():
+    return render_template('VisualizadorMasProyectos.html')
+
+
 
 
 @app.route('/Login', methods=['GET', 'POST'])
@@ -38,12 +75,14 @@ def Login():
 
         if usuario:
             stored_password = usuario[1]
-            if bcrypt.check_password_hash(stored_password, contraseña):
+            if Bcrypt.check_password_hash(stored_password, contraseña):
                 session['rol'] = usuario[0]
                 if usuario[0] == 1:
-                    return redirect(url_for('Admin'))
+                    return redirect(url_for('Registro_Proyecto'))
                 elif usuario[0] == 2:
                     return redirect(url_for('Visualizador'))
+                elif usuario[0]== 3:
+                    return redirect(url_for('Administrador'))
             else:
                 flash('Correo o contraseña incorrectos')
                 return render_template('Login.html')  
@@ -56,7 +95,6 @@ def Login():
 
 
 
-    
 
 
 @app.route('/Registro')
@@ -74,7 +112,7 @@ def guardarRegistro():
         Vrol=request.form['rol']
 
         
-        hashed_password = bcrypt.generate_password_hash(Vcontraseña).decode('utf-8')
+        hashed_password = Bcrypt.generate_password_hash(Vcontraseña).decode('utf-8')
 
         cs = mysql.connection.cursor()
         cs.execute('INSERT INTO usuarios (nombre, apellidos, f_nacimiento, correo, contraseña, id_rol) VALUES (%s, %s, %s, %s, %s, %s)', 
@@ -85,7 +123,10 @@ def guardarRegistro():
 
 
 
-@app.route('/Inicio_pagina')
+
+
+
+@app.route('/Inicio_pagina_Publicador')
 def Inicio_pagina():
     return render_template('Inicio2.html')
 
@@ -96,6 +137,20 @@ def Proyectos():
 @app.route('/Perfil')
 def Perfil():
     return render_template('perfil.html')
+
+@app.route('/Notificaciones')
+def Notificaciones():
+    return render_template('Notificaciones.html')
+
+@app.route('/PerfilProyecto')
+def PerfilProyecto():
+    return render_template('Proyectoperfil.html')
+
+
+#Esta ruta es para la interfaz de proyectos de otras personas
+@app.route('/Perfil_Proyectos')
+def Perfil_Proyectos():
+    return render_template('Perfil_Proyectos.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Proyecto - OPDES</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-green-50">
+
+<div class="container mx-auto py-12">
+    <div class="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+        <div class="p-6">
+            <h1 class="text-3xl font-semibold text-gray-800 text-center">BIENVENIDO A OPDES</h1>
+            <p class="mt-2 text-gray-600">Para continuar con tu registro deberás de registrar un proyecto.</p>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <div class="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+            <div class="p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">Registrar Proyecto</h2>
+                <form>
+                    <div class="mb-4">
+                        <label for="nombre-proyecto" class="block text-sm font-medium text-gray-700">Nombre del Proyecto:</label>
+                        <input type="text" id="nombre-proyecto" name="nombre-proyecto" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="nombre-empresa" class="block text-sm font-medium text-gray-700">Nombre de la Empresa:</label>
+                        <input type="text" id="nombre-empresa" name="nombre-empresa" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="correo-empresa" class="block text-sm font-medium text-gray-700">Correo Electrónico de la Empresa:</label>
+                        <input type="text" id="correo-empresa" name="correo-empresa" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="telefono-empresa" class="block text-sm font-medium text-gray-700">Número Telefónico de la Empresa:</label>
+                        <input type="text" id="telefono-empresa" name="telefono-empresa" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border">
+                    </div>
+                    <div class="mb-4" id="file-drop-area">
+                        <label for="foto-portada" class="block text-sm font-medium text-gray-700">Foto de Portada del Proyecto:</label>
+                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                            <div class="space-y-1 text-center">
+                                <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Seleccionar archivo</span>
+                                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                </label>
+                                <p class="pl-1">o arrastra y suelta</p>
+                                <p class="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                                <!-- Aqui inicia el contenedor de la imagen -->
+                                <div id="preview-container" class="hidden">
+                                    <img id="preview-image" class="mt-2 mx-auto rounded-md shadow-md" src="#" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="descripcion-proyecto" class="block text-sm font-medium text-gray-700">Descripción</label>
+                        <textarea id="descripcion-proyecto" name="descripcion-proyecto" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="objetivo-proyecto" class="block text-sm font-medium text-gray-700">Objetivo del Proyecto</label>
+                        <textarea id="objetivo-proyecto" name="objetivo-proyecto" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border"></textarea>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-900 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-600 focus:outline-none focus:border-green-600 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                            Registrar
+                        </button>
+                        <a type="submit" href="/Inicio_pagina_Publicador" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-900 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
+                            continuar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const fileDropArea = document.getElementById('file-drop-area');
+    const fileUploadInput = document.getElementById('file-upload');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImage = document.getElementById('preview-image');
+
+    // Evita que el navegador abra una nueva pestaña al arrastrar el archivo sobre el área de soltar
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        fileDropArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    // Event listener para capturar el cambio en el campo de carga de archivos
+    fileUploadInput.addEventListener('change', function() {
+        const file = this.files[0]; // Obtiene el primer archivo seleccionado
+
+        // Verifica si se seleccionó un archivo
+        if (file) {
+            const reader = new FileReader(); // Crea un objeto FileReader
+
+            // Event listener para cargar la imagen una vez que se haya leído
+            reader.addEventListener('load', function() {
+                previewImage.src = reader.result; // Establece la fuente de la imagen con el resultado de la lectura
+                previewContainer.classList.remove('hidden'); // Muestra el contenedor de vista previa
+            });
+
+            reader.readAsDataURL(file); // Lee el archivo como una URL de datos
+        } else {
+            previewImage.src = ''; // Restablece la vista previa de la imagen
+            previewContainer.classList.add('hidden'); // Oculta el contenedor de vista previa
+        }
+    });
+
+    // Event listener para manejar el evento de soltar
+    fileDropArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        let dt = e.dataTransfer;
+        let files = dt.files;
+
+        handleFiles(files);
+    }
+
+    function handleFiles(files) {
+        [...files].forEach(uploadFile);
+    }
+
+    function uploadFile(file) {
+        const reader = new FileReader(); // Crea un objeto FileReader
+
+        // Event listener para cargar la imagen una vez que se haya leído
+        reader.addEventListener('load', function() {
+            previewImage.src = reader.result; // Establece la fuente de la imagen con el resultado de la lectura
+            previewContainer.classList.remove('hidden'); // Muestra el contenedor de vista previa
+        });
+
+        reader.readAsDataURL(file); // Lee el archivo como una URL de datos
+    }
+</script>
+
+</body>
+</html>

@@ -1,27 +1,65 @@
 {% extends 'plantilla.html' %}
 
 {% block body %} 
+<style>
+  .custom-file-input {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+  }
+
+  .custom-file-input input[type="file"] {
+      position: absolute;
+      font-size: 100px;
+      opacity: 0;
+      right: 0;
+      top: 0;
+      cursor: pointer;
+  }
+  .custom-file-input::file-selector-button {
+      background-color: #4a5568;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+</style>
+
 <div class="min-h-screen flex flex-col">
-    <div class="flex-1">
-        <img src="https://www.nueva-iso-14001.com/wp-content/uploads/2020/05/sostenibilidad.jpg" alt="Foto de portada" class="w-full h-xl object-cover object-center">
-    </div>
-    <div class="bg-white p-8 rounded-t-lg  flex-1">
-        <div class="flex justify-center -mt-20">
-            <img src="https://i.pinimg.com/564x/ca/de/92/cade92fc079584a143d6a04a36371717.jpg" alt="Foto de perfil" class="w-32 h-32 rounded-full border-4 border-white">
-        </div>
-        <div class="text-center mt-6">
-            <div class="text-center mt-6">
-                <h2 class="text-2xl font-semibold text-gray-800">Jimena Suarez Garcia</h2>
-                <p class="text-sm text-gray-600 mt-2">Jimena@gmail.com</p>
-                <p class="text-sm text-gray-600">Quéretaro, México</p>
-            </div>
-        </div>
-        <div class="flex justify-center mt-6">
-            <button id="editProfileBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Editar Perfil</button>
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cerrar Sesión</button>
-        </div>
-    </div>
+  <div class="flex-1">
+      <img src="https://www.nueva-iso-14001.com/wp-content/uploads/2020/05/sostenibilidad.jpg" alt="Imagen 1" class="imagen-con-mejor-calidad w-full h-96 object-cover object-center"> 
+  </div>
+  <div class="bg-white p-8 rounded-t-lg  flex-1">
+      <div class="flex justify-center -mt-6"> 
+          <img src="https://i.pinimg.com/564x/ca/de/92/cade92fc079584a143d6a04a36371717.jpg" alt="Imagen con mejor calidad" class="imagen-con-mejor-calidad w-48 h-48 rounded-full border-4 border-white mt-[-2rem]"> <!-- Ajustar el tamaño de la imagen de perfil (w-48 h-48) y el margen superior -->
+      </div>
+      <div class="text-center mt-6">
+          <div class="text-center mt-6">
+              <h2 class="text-4xl font-semibold text-gray-800">Monica Resendiz Garcia</h2>
+              <p class="text-xl text-gray-600 mt-2">MonicaGarcia50@gmail.com</p>
+              <p class="text-sm text-gray-600">Querétaro, México</p>
+              <div class="flex justify-center mb-4 p-2">
+                  <a href="https://api.whatsapp.com/send?phone=4481299712" target="_blank" class="text-gray-700 mr-4">
+                      <i class="fab fa-whatsapp fa-2x"></i>
+                  </a>
+                  <a href="mailto:121038582@upq.edu.mx" class="text-gray-700">
+                      <i class="fas fa-envelope fa-2x"></i>
+                  </a>
+              </div>
+              <div class="flex justify-center mt-6">
+                  <button id="editProfileBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Editar Perfil del Administrador</button>
+                  <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Cerrar Sesión</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
+
 
 <!-- AQUI INICIA EL MODAL PARA EDITAR EL PERFIL DEL USUARIO -->
 <div id="editProfileModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
@@ -51,9 +89,25 @@
                     <label for="location" class="block text-sm font-medium text-gray-600">Ubicación</label>
                     <input type="text" id="location" name="location" value="Querétaro, México" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                   </div>
+                  <div class="mb-4">
+                    <label for="profile-pic" class="block text-sm font-medium text-gray-600">Foto de Perfil</label>
+                    <div class="custom-file-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <input type="file" id="profile-pic" name="profile-pic" accept="image/*">
+                        <span>Seleccionar Archivo</span>
+                    </div>
+                  </div>
+                
+                  <div class="mb-4">
+                      <label for="cover-pic" class="block text-sm font-medium text-gray-600">Foto de Portada</label>
+                      <div class="custom-file-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <input type="file" id="cover-pic" name="cover-pic" accept="image/*">
+                        <span>Seleccionar Archivo</span>
+                      </div>
+                  </div>
                   <div class="mt-6">
                     <button type="submit" class="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">Guardar Cambios</button>
                   </div>
+                  
                 </form>
               </div>
             </div>
@@ -68,7 +122,7 @@
     </div>
   </div>
 </div>
-
+<!-- CIERRE DEL MODAL -->
 
 
 <div class="flex justify-center items-center h-screen">
@@ -95,7 +149,7 @@
               <p class="text-sm text-center text-gray-700 mb-6">Proporcionar soluciones de energía sostenible y renovable para reducir la dependencia de fuentes de energía no renovables y mitigar el impacto ambiental, promoviendo así un futuro más limpio y sostenible para las generaciones presentes y futuras</p>
               <p><strong>NOMBRE DE LA EMPRESA:</strong></p>
               <p class="text-sm text-center text-gray-700"><strong>EcoEnergía Innovadora</strong></p>
-              <p><strong>CONTACTOS:</strong></p>
+              <p><strong>CONTACTOS DE LA EMPRESA:</strong></p>
               <div class="flex justify-center mb-4">
                   <a href="https://api.whatsapp.com/send?phone=4481299712" target="_blank" class="text-gray-700 mr-4">
                       <i class="fab fa-whatsapp fa-2x"></i>
@@ -105,7 +159,7 @@
                   </a>
               </div>
               <div class="text-center">
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver más</button>
+                  <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="/PerfilProyecto">Ver más</a>
               </div>
           </div>
       </div>
