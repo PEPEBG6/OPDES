@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+    <style>
+        .logo_barra{
+            width: 60px;
+        }
+        .notification-icon-container {
+        position: relative;
+        }
+
+        .notification-icon {
+        font-size: 1.5rem;
+        cursor: pointer;
+        }
+
+        .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #ff4d4d; 
+        color: white;
+        border-radius: 100%;
+        padding: 3px 6px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <nav class="bg-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <img src="/static/imagenes/Logo negro.png" class="h-10 w-auto">
+                <a href="#" class="text-black text-lg font-semibold ml-2">OPDES</a>
+            </div>
+
+            <div class="hidden md:flex items-center justify-end flex-1">
+                <a href="/Inicio_pagina_Publicador" class="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
+                <a href="/Proyectos" class="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Proyectos</a>
+                <div class="notification-icon-container m-2">
+                    <a href="/Notificaciones">
+                      <span class="notification-icon">
+                        <i class="fas fa-bell"></i> 
+                      </span>
+                      <span class="notification-badge">6</span> 
+                    </a>
+                </div>
+                <div class="ml-4 relative">
+                    <button type="button" id="profileButton" class="flex items-center focus:outline-none">
+                        <img src="https://i.pinimg.com/564x/ca/de/92/cade92fc079584a143d6a04a36371717.jpg" alt="Imagen de Perfil" class="h-10 w-10 rounded-full">
+                    </button>
+                    
+                    <div id="profileDropdown" class="hidden absolute z-10 mt-2 w-40 bg-white rounded-md shadow-lg right-0">
+                        <div class="py-0">
+                            <a href="/Perfil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
+                            <a href="#" id="changePasswordLink" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cambiar Contraseña</a>
+                            <a href="/Login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<div id="changePasswordModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="relative bg-white rounded-lg shadow-lg w-96">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold mb-4">Cambiar Contraseña</h2>
+                <form id="changePasswordForm">
+                    <div class="mb-4">
+                        <label for="currentPassword" class="block text-sm font-medium text-gray-600">Contraseña Actual</label>
+                        <input type="password" id="currentPassword" name="currentPassword" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="newPassword" class="block text-sm font-medium text-gray-600">Nueva Contraseña</label>
+                        <input type="password" id="newPassword" name="newPassword" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirmNewPassword" class="block text-sm font-medium text-gray-600">Confirmar Nueva Contraseña</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                    </div>
+                    <div class="mt-6">
+                        <button type="submit" class="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+            <button id="closeModalBtn" class="absolute top-0 right-0 mt-4 mr-4 text-gray-700 hover:text-gray-900" aria-label="Cerrar">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const changePasswordLink = document.getElementById('changePasswordLink');
+    const changePasswordModal = document.getElementById('changePasswordModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    changePasswordLink.addEventListener('click', function() {
+        
+        changePasswordModal.classList.remove('hidden');
+    });
+    closeModalBtn.addEventListener('click', function() {
+        
+        changePasswordModal.classList.add('hidden');
+    });
+</script>
+
+    
+
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var profileButton = document.getElementById('profileButton');
+        var profileDropdown = document.getElementById('profileDropdown');
+
+        
+        profileButton.addEventListener('click', function() {
+            profileDropdown.classList.toggle('hidden');
+        });
+
+        
+        document.addEventListener('click', function(event) {
+            var isClickInside = profileButton.contains(event.target) || profileDropdown.contains(event.target);
+            if (!isClickInside) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+    });
+    </script>
+
+    {% block body %}
+
+    {% endblock %}
+    
+    
+    <footer class="bg-green-900 text-white p-8">
+       
+        <div class="mt-8 text-center font-semibold mb-2">
+            <h2 class="text-center mb-2">Contacto</h2>
+            <p>Teléfono: (123) 456-7890</p>
+            <p>Email: OPDES@gmail.com</p>
+          <p>&copy; 2024 OPDES</p>
+        </div>
+    </footer>

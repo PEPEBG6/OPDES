@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <img src="/static/imagenes/Logo negro.png" class="h-10 w-auto">
+                    <a href="#" class="text-black text-lg font-semibold ml-2">OPDES</a>
+                </div>
+
+                <div class="hidden md:flex items-center justify-end flex-1">
+                    <a href="/AdminProyectos" class="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
+                    <a href="/AdminProyectos" class="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Usuarios</a>
+
+                    <!-- Dropdown para las opciones -->
+                    <div class="relative ml-4">
+                        <button id="optionsBtn" type="button" class="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium focus:outline-none">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <div id="optionsDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                            <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Administrador</a>
+                            <a href="/Usuario" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Usuario</a>
+                        </div>
+                    </div>
+                    
+                    <div class="ml-4 relative">
+                        <button type="button" id="profileButton" class="flex items-center focus:outline-none">
+                            <img src="https://i.pinimg.com/564x/78/97/67/78976741e2e594513d0ec7edfc5b1392.jpg" alt="Imagen de Perfil" class="h-10 w-10 rounded-full">
+                        </button>
+                        
+                        <div id="profileDropdown" class="hidden absolute z-10 mt-2 w-40 bg-white rounded-md shadow-lg right-0">
+                            <div class="py-0">
+                                <a href="/Visualizadorperfil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
+                                <a href="#" id="changePasswordLink" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cambiar Contraseña</a>
+                                <a href="/Login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% block body %}
+
+    {% endblock %}
+
+    <footer class="bg-green-900 text-white p-8">
+        <div class="mt-8 text-center font-semibold mb-2">
+            <h2 class="text-center mb-2">Contacto</h2>
+            <p>Teléfono: (123) 456-7890</p>
+            <p>Email: OPDES@gmail.com</p>
+            <p>&copy; 2024 OPDES</p>
+        </div>
+    </footer>
+
+    <!-- Script para manejar el Dropdown -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const optionsBtn = document.getElementById('optionsBtn');
+            const optionsDropdown = document.getElementById('optionsDropdown');
+
+            // Mostrar u ocultar opciones al hacer clic en el botón
+            optionsBtn.addEventListener('click', function() {
+                optionsDropdown.classList.toggle('hidden');
+            });
+
+            // Ocultar opciones al hacer clic fuera del botón o del contenedor de opciones
+            document.addEventListener('click', function(event) {
+                if (!optionsBtn.contains(event.target) && !optionsDropdown.contains(event.target)) {
+                    optionsDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

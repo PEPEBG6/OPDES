@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body {
+            background-image: url("/static/imagenes/fondo.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+        .card-bg-white {
+            background-color: rgb(255, 255, 255);
+            top: 80px;
+            height:100%;
+            width: 157%;
+            position: relative;
+            left: 120px;
+            
+        }
+        .card-img{
+            top: 80px;
+            height: 220px;
+            width: auto;
+            position: relative;
+            left: 10px;
+             
+        }
+        .card-1{
+            background-color: #dce0e07a;
+            top: 80px;
+            height:100%;
+            width: 120%;
+            position: relative;
+            right: 250px;
+           
+        }
+    
+        .Logonegro{
+            width: 200px;
+            height: 200px;
+            position: relative;
+            left: 130px;
+        }
+        .form-label{
+            color: black;
+        }
+       
+        .letra{
+            color: black;
+
+        }
+
+        .btn1{
+            background-color: #30645c;
+        }
+        
+
+    </style>
+</head>
+<body>
+    
+
+    
+    <div class="container text-center">
+        <div class="col-md-6">
+            <div class="card card-bg-white border-0 shadow">
+                <div class="card-body text-light">
+                    <form action="/guardarRegistro" method="POST" id="Registro">
+                        <h1 class=" text-center text-display letra">Registro</h1>
+                        <div class="container row g-3">
+                            <div class="col">
+                                <div class="mb-4">
+                                    <label for="username" class="form-label">Nombre:</label>
+                                    <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Ingrese su Nombre" required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-4">
+                                    <label for="password" class="form-label">Apellidos:</label>
+                                    <input type="text" class="form-control" id="Apellidos" name="Apellidos" placeholder="Ingrese sus Apellidos" required>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="container row g-3">
+                            <div class="col">
+                                <div class="mb-4">
+                                    <label for="username" class="form-label">Fecha de Nacimiento:</label>
+                                    <input type="date" class="form-control" id="Fecha_nac" name="Fecha_nac" required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-4">
+                                    <label for="username" class="form-label">Correo Electronico:</label>
+                                    <input type="email" class="form-control" id="Correo" name="Correo" placeholder="Ingrese su Nombre" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container row g-3">
+                            <div class="col">
+                                <div class="mb-4">
+                                    <label for="username" class="form-label">Contraseña:</label>
+                                    <input type="password" class="form-control" id="Contraseña" name="Contraseña" placeholder="Ingrese su Nombre" required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-4">
+                                    <label for="username" class="form-label">Confirmar Contraseña:</label>
+                                    <input type="password" class="form-control" id="Conf_contra" name="Conf_contra" placeholder="Ingrese su Nombre" required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-4">
+                                    <div class="form-group">
+                                        <label for="username" class="form-label">Rol:</label>
+                                        <label for="opciones">Opciones:</label>
+                                        <select class="form-control" id="opciones" name="rol">
+                                            <option value="">Selecciona una opción</option>
+                                            <option value="1" title="El Publicador de Proyectos es responsable de crear, editar y publicar nuevos proyectos en el sistema.">Publicador de Proyectos</option>
+                                            <option value="2" title="El Visualizador de Proyectos tiene acceso al sistema de gestión de proyectos con el propósito de visualizar y revisar los proyectos existentes.">Visualizador de Proyectos</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="d-grid gap-2 d-md-block text-center">
+                            <button class="btn btn-success btn1" type="submit">Guardar Registro <i class="bi bi-floppy-fill"></i></button>
+                            <a class="btn btn-secondary" type="button" href="/Login">Regresar <i class="bi bi-arrow-return-left"></i></a>
+                        </div>
+                        <!-- NOTAS: -->
+                        <!-- FALTA POR MODIFICAR LA ALERTA PARA QUE NO APAREZCA AL MOMENTO DE ABRIR ESTA INTERFAZ -->
+                        <script>
+                            document.getElementById("Registro").onsubmit = function() {
+                                var password = document.getElementById("Contraseña").value;
+                                var confirmPassword = document.getElementById("Conf_contra").value;
+                    
+                                if (password != confirmPassword) {
+                                    alert("Las contraseñas no coinciden");
+                                    return false;
+                                }else{
+                                    Swal.fire({
+                                    title: "Good job!",
+                                    text: "¡Tu Registro se Agreso Exitosamente!",
+                                    icon: "success"
+                                    });
+                                }
+                                    
+                            };
+                        </script>
+                        
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+
+    
+
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

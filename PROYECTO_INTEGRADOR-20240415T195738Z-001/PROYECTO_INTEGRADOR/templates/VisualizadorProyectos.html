@@ -1,0 +1,75 @@
+{% extends 'plantilla3.html' %}
+
+{% block body %} 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<!-- Inicio de la barra de busqueda  -->
+<div class="flex items-center justify-start mx-6 mt-6">
+    <div class="relative">
+      <input type="text" placeholder="Buscar..." class="border border-gray-300 px-3 py-2 rounded-l-full focus:outline-none focus:border-blue-500">
+      <button class="bg-green-500 text-white px-4 py-2 rounded-r-full">Buscar <i class="bi bi-search"></i></button>
+    </div>
+</div>
+  
+
+<!-- Aqui se inicia todos los cards para los proyectos que se vam registrando -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 top-15 m-9 ">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src="https://2.bp.blogspot.com/-bhIafb7d3HY/UVydtT_nKYI/AAAAAAAABpE/j4Yzl8f0iG4/s400/agricultura+ecologica.jpg" alt="Imagen 1" class="w-full h-64 object-cover object-center">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">SembraVerde</h3>
+        <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/Perfil_Proyectos">Ver Más</a>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src="https://www.bbva.com/wp-content/uploads/2018/08/A-2707-Campo-BBVA.jpg" alt="Imagen 2" class="w-full h-64 object-cover object-center">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">EcoHuerta</h3>
+        <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/Perfil_Proyectos">Ver Más</a>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src="https://www.gaceta.unam.mx/wp-content/uploads/2019/10/190930-Com4-Des-f1-proyectos-sustentables.jpg" alt="Imagen 3" class="w-full h-64 object-cover object-center">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">AgroSostenible</h3>
+        <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/Perfil_Proyectos">Ver Más</a>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src="https://i0.wp.com/corpei.org/wp-content/uploads/2023/07/AGRODES-WEB.png?resize=870%2C480&ssl=1" alt="Imagen 4" class="w-full h-64 object-cover object-center">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">AGRO</h3>
+        <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/Perfil_Proyectos">Ver Más</a>
+      </div>
+    </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 top-15 m-9">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src="https://cdn2.hubspot.net/hubfs/3478834/Agatha/Blog%20Agatha/Noviembre/7%20ventajas%20desarrollo%20sustentable.png" alt="Imagen 1" class="w-full h-64 object-cover object-center">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">EcoEnergía</h3>
+        <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/Perfil_Proyectos">Ver Más</a>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src="https://www.tuexperto.com/wp-content/uploads/2019/06/hp-employees-sdbeach.jpg" alt="Imagen 2" class="w-full h-64 object-cover object-center">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">SolucionesVerdes</h3>
+        <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/Perfil_Proyectos">Ver Más</a>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src="https://responsabilidadsocial.net/wp-content/uploads/2020/07/responsabilidad-social-empresarial-hp-publica-su-informe-anual-de-impacto-sostenible.jpg" alt="Imagen 3" class="w-full h-64 object-cover object-center">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">ResiRecicla</h3>
+        <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/Perfil_Proyectos">Ver Más</a>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src="https://i.ytimg.com/vi/GxVujAVm3nQ/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDd21GnaZbjg3wHxeAqT0avaok7Vg" alt="Imagen 4" class="w-full h-64 object-cover object-center">
+      <div class="p-4">
+        <h3 class="text-xl font-semibold mb-2">CiudadVerde</h3>
+        <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/Perfil_Proyectos">Ver Más</a>
+      </div>
+    </div>
+</div>
+{% endblock %}
