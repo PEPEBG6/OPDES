@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
 from flask_bcrypt import Bcrypt
+from werkzeug.utils import secure_filename
 import hashlib
 
 app= Flask(__name__,  template_folder='templates')
@@ -17,16 +18,48 @@ mysql= MySQL(app)
 def Inicio():
     return render_template('Inicio.html')
 
-#Esta es la ruta para el registro de un proyecto 
+#Esta es la ruta para ir a la vista para el registro de un proyecto 
 @app.route('/Registro_Proyecto')
 def Registro_Proyecto():
     return render_template('Registro_Proyecto.html')
+
+#Esta es la ruta para guardar un proyecto en la base de datos
+@app.route('/guardarProyecto', methods=['POST'])
+def guardarProyecto():
+    if 'rol' in session:
+        if request.method == 'POST':
+            Vnombre = request.form['nombre-proyecto']
+            Vnombreempresa = request.form['nombre-empresa']
+            Vcorreo = request.form['correo-empresa']
+            Vtelefono = request.form['telefono-empresa']
+            Vdescripcion = request.form['descripcion-proyecto']
+            Vobjetivo = request.form['objetivo-proyecto']
+            
+            # Manejo del archivo de imagen
+            if 'file-upload' not in request.files:
+                return 'No file part'
+            file = request.files['file-upload']
+            if file.filename == '':
+                return 'No selected file'
+            if file:
+                imagen = file.read()
+            else:
+                return 'File not allowed'
+
+            cursor = mysql.connection.cursor()
+            cursor.execute('INSERT INTO proyectos (nombre, nombreempresa, correo, telefono, imagen, descripcion, objetivo) VALUES (%s, %s, %s, %s, %s, %s, %s)', 
+                        (Vnombre, Vnombreempresa, Vcorreo, Vtelefono, imagen, Vdescripcion, Vobjetivo))
+            mysql.connection.commit()
+            cursor.close()
+
+        return redirect(url_for('VisualizadorProyectos'))
+    else:
+        return redirect(url_for('Login'))
 
 #ESTA RUTA ES PARA ADMINISTRADOR 
 @app.route('/Administrador')
 def Administrador():
     return render_template('admin.html')
-
 
 @app.route('/AdminProyectos')
 def AdminProyectos():
@@ -35,8 +68,6 @@ def AdminProyectos():
 @app.route('/AdminInicio')
 def AdminInicio():
     return render_template('adminInicio.html')
-
-
 
 #ESTA RUTA ES PARA EL ROL VISUALIZADOR DE PROYECTOS
 @app.route('/Visualizador')
@@ -48,9 +79,33 @@ def VisualizadorPerfil():
     return render_template('VisualizadorPerfil.html')
 
 
-@app.route('/VisualizadorProyector')
+@app.route('/VisualizadorProyectos')
 def VisualizadorProyectos():
-    return render_template('VisualizadorProyectos.html')
+    if 'rol' in session:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM proyectos')
+        proyectos = cursor.fetchall()
+        cursor.close()
+
+        # Convierte las imágenes BLOB a base64 para poder ser renderizadas en HTML
+        proyectos = [
+            {
+                'id': p[0],
+                'nombre': p[1],
+                'nombreempresa': p[2],
+                'correo': p[3],
+                'telefono': p[4],
+                'imagen': p[5].decode('utf-8') if p[5] else None,
+                'descripcion': p[6],
+                'objetivo': p[7]
+            } for p in proyectos
+        ]
+
+        return render_template('VisualizadorProyectos.html', proyectos=proyectos)
+    else:
+        return redirect(url_for('Login'))
+
+    
 
 @app.route('/VisualizadorNotificaciones')
 def VisualizadorNotificaciones():
@@ -72,13 +127,14 @@ def Login():
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT id_rol, contraseña FROM usuarios WHERE correo = %s', (correo,))
         usuario = cursor.fetchone()
+        cursor.close()
 
         if usuario:
             stored_password = usuario[1]
             if Bcrypt.check_password_hash(stored_password, contraseña):
                 session['rol'] = usuario[0]
                 if usuario[0] == 1:
-                    return redirect(url_for('Registro_Proyecto'))
+                    return redirect(url_for('Visualizador'))
                 elif usuario[0] == 2:
                     return redirect(url_for('Visualizador'))
                 elif usuario[0]== 3:
