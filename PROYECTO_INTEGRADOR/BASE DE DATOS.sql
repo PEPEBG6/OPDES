@@ -24,9 +24,7 @@ create table proyectos(
     telefono varchar(10),
     foto longblob,
     descripcion longtext,
-    objetivo longtext,
-    f_inicio date,
-    informacion longtext
+    objetivo longtext
 );
 
 create table proyectos_usuarios(
@@ -36,3 +34,6 @@ create table proyectos_usuarios(
     foreign key (id_usuario) references usuarios (id) on delete cascade on update cascade,
     foreign key (id_proyecto) references proyectos (id) on delete cascade on update cascade
 );
+
+
+insert into usuarios (id int not null primary key auto_increment, nombre, apellidos, f_nacimiento, correo, id_rol, contraseña)
