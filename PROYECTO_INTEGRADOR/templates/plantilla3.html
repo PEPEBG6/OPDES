@@ -35,6 +35,19 @@
     <title>Document</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <script>
+                    Swal.fire({
+                        title: "{{ category }}",
+                        text: "{{ message }}",
+                        icon: "success"
+                    });
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <nav class="bg-white shadow-lg">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
@@ -45,7 +58,7 @@
 
             <div class="hidden md:flex items-center justify-end flex-1">
                 <a href="/Visualizador" class="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
-                <a href="/VisualizadorProyector" class="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Proyectos</a>
+                <a href="/VisualizadorProyectos" class="text-black hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Proyectos</a>
                 <div class="notification-icon-container m-2">
                     <a href="/VisualizadorNotificaciones">
                       <span class="notification-icon">
@@ -63,7 +76,7 @@
                         <div class="py-0">
                             <a href="/Visualizadorperfil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
                             <a href="#" id="changePasswordLink" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cambiar Contraseña</a>
-                            <a href="/Login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                            <a href="/CerrarSesion" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
                         </div>
                     </div>
                 </div>
@@ -105,6 +118,7 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     const changePasswordLink = document.getElementById('changePasswordLink');
@@ -119,6 +133,7 @@
         changePasswordModal.classList.add('hidden');
     });
 </script>
+
 
     
 
