@@ -168,7 +168,7 @@ def Login():
         contraseña = request.form['contraseña']
 
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT id_rol, contraseña FROM usuarios WHERE correo = %s', (correo,))
+        cursor.execute('SELECT ro.rol, contraseña FROM usuarios us inner join roles ro on us.id_rol = ro.id WHERE us.correo = %s', (correo,))
         usuario = cursor.fetchone()
         cursor.close()
 
@@ -176,12 +176,13 @@ def Login():
             stored_password = usuario[1]
             if Bcrypt.check_password_hash(stored_password, contraseña):
                 session['rol'] = usuario[0]
-                if usuario[0] == 1:
+                if usuario[0] == 'Publicador' or usuario[0] == 'Visualizador':
                     return redirect(url_for('Visualizador'))
-                elif usuario[0] == 2:
-                    return redirect(url_for('Visualizador'))
-                elif usuario[0] == 3:
+                elif usuario[0] == 'Administrador':
                     return redirect(url_for('Administrador'))
+                else:
+                    flash('Rol no válido', 'error')
+                    return redirect(url_for('Login'))
             else:
                 flash('Correo o contraseña incorrectos', 'error')  # Cambia la categoría a 'error'
                 return redirect(url_for('Login'))  
@@ -204,29 +205,33 @@ def Registro ():
 @app.route('/guardarRegistro', methods=['POST'])
 def guardarRegistro():
     if request.method == 'POST':
-        Vnombre=request.form['Nombre']
-        Vapellidos=request.form['Apellidos']
-        Vfecha_nac=request.form['Fecha_nac']
-        Vcorreo=request.form['Correo']
-        Vcontraseña=request.form['Contraseña']
-        Vrol=request.form['rol']
+        Vnombre = request.form['Nombre']
+        Vapellidos = request.form['Apellidos']
+        Vfecha_nac = request.form['Fecha_nac']
+        Vcorreo = request.form['Correo']
+        Vcontraseña = request.form['Contraseña']
+        Vrol = int(request.form['rol'])  # Asegúrate de convertir a entero
 
-        
         hashed_password = Bcrypt.generate_password_hash(Vcontraseña).decode('utf-8')
 
         cs = mysql.connection.cursor()
         cs.execute('INSERT INTO usuarios (nombre, apellidos, f_nacimiento, correo, contraseña, id_rol) VALUES (%s, %s, %s, %s, %s, %s)', 
                    (Vnombre, Vapellidos, Vfecha_nac, Vcorreo, hashed_password, Vrol))
         mysql.connection.commit()
+        cs.close()
         session['rol'] = Vrol
         
-        
-        if Vrol == 1:
+        # Redirige según el rol
+        if Vrol == 1 or Vrol == 2:
             return redirect(url_for('Visualizador'))
-        elif Vrol == 2:
-            return redirect(url_for('Visualizador'))
-        elif Vrol == 3:
-            return redirect(url_for('Administrador'))
+        else:
+            flash('Error al registrar usuario', 'error')
+            return redirect(url_for('Registro'))
+    
+    # Manejo del caso en que el método no sea POST
+    flash('Error al registrar usuario', 'error')
+    return redirect(url_for('Registro'))
+
 
 
 

@@ -8,7 +8,8 @@ create table usuarios(
     f_nacimiento date,
     correo varchar(50),
     id_rol int,
-    contraseña varchar(256)
+    contraseña varchar(256),
+    foreign key (id_rol) references roles (id) on delete cascade on update cascade
 );
 
 create table roles(
@@ -35,5 +36,4 @@ create table proyectos_usuarios(
     foreign key (id_proyecto) references proyectos (id) on delete cascade on update cascade
 );
 
-
-insert into usuarios (id int not null primary key auto_increment, nombre, apellidos, f_nacimiento, correo, id_rol, contraseña)
+insert into roles (rol) values ('Publicador'), ('Visualizador'), ('Administrador');
