@@ -3,16 +3,29 @@
 {% block body %} 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <!-- Inicio de la barra de busqueda  -->
-<div class="flex items-center justify-start mx-6 mt-6">
-    <div class="relative">
-      <input type="text" placeholder="Buscar..." class="border border-gray-300 px-3 py-2 rounded-l-full focus:outline-none focus:border-blue-500">
-      <button class="bg-green-500 text-white px-4 py-2 rounded-r-full">Buscar <i class="bi bi-search"></i></button>
-    </div>
+<div class="flex items-center justify-between mx-6 mt-6">
+  <div class="flex items-center">
+    <input type="text" placeholder="Buscar..." class="border border-gray-300 px-3 py-2 rounded-l-full focus:outline-none focus:border-blue-500">
+    <button class="bg-green-500 text-white px-4 py-2 rounded-r-full">Buscar <i class="bi bi-search"></i></button>
+  </div>
+  {% if session['rol'] == 1 %}
+  <button onclick="location.href='/Registro_Proyecto'" class="bg-blue-500 text-white px-4 py-2 mr-3 rounded-full">Registrar Proyecto</button>
+  {% endif %}
 </div>
+
   
 
 <!-- Aqui se inicia todos los cards para los proyectos que se vam registrando -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 top-15 m-9 ">
+    {% for proyecto in proyectos %}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <img src="data:image/jpeg;base64,{{ proyecto.imagen }}" alt="Imagen 1" class="w-full h-64 object-cover object-center">
+        <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">{{ proyecto.nombre }}</h3>
+            <a class="bg-green-800 text-white px-6 py-2 rounded-md " href="/VisualizadorMasProyectos">Ver Más</a>
+        </div>
+    </div>
+    {% endfor %}
     <div class="bg-white rounded-lg shadow-md overflow-hidden">
       <img src="https://2.bp.blogspot.com/-bhIafb7d3HY/UVydtT_nKYI/AAAAAAAABpE/j4Yzl8f0iG4/s400/agricultura+ecologica.jpg" alt="Imagen 1" class="w-full h-64 object-cover object-center">
       <div class="p-4">

@@ -21,7 +21,7 @@
         <div class="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
             <div class="p-6">
                 <h2 class="text-xl font-semibold text-gray-800 mb-2">Registrar Proyecto</h2>
-                <form>
+                <form action="/guardarProyecto" method="post" enctype="multipart/form-data">
                     <div class="mb-4">
                         <label for="nombre-proyecto" class="block text-sm font-medium text-gray-700">Nombre del Proyecto:</label>
                         <input type="text" id="nombre-proyecto" name="nombre-proyecto" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border">
@@ -68,9 +68,6 @@
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-900 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-600 focus:outline-none focus:border-green-600 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
                             Registrar
                         </button>
-                        <a type="submit" href="/Inicio_pagina_Publicador" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-900 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
-                            continuar
-                        </a>
                     </div>
                 </form>
             </div>

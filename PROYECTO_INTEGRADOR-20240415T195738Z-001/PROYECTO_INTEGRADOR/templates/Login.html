@@ -57,7 +57,6 @@
 </head>
 <body>
     
-    
     <div class="container-fluid d-flex align-items-center justify-content-center p-2">
         <div class="row ">
             <div class="col-md-6 p-0">
@@ -92,6 +91,24 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Ejecutar SweetAlert para los mensajes flash después de que el DOM se haya cargado completamente
+        document.addEventListener('DOMContentLoaded', function() {
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            title: "{{ category }}",
+                            text: "{{ message }}",
+                            icon: "error"  // Puedes cambiar el icono según la categoría del mensaje
+                        });
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        });
+    </script>
 </body>
 </html>
