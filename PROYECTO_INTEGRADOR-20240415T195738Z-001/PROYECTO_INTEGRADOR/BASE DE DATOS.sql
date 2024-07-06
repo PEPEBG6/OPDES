@@ -1,16 +1,7 @@
+-- drop database opdes;
+
 create database opdes; 
 use opdes;
-
-create table usuarios(
-	id int not null primary key auto_increment,
-    nombre varchar(50),
-    apellidos varchar(50),
-    f_nacimiento date,
-    correo varchar(50),
-    id_rol int,
-    contraseña varchar(256),
-    foreign key (id_rol) references roles (id) on delete cascade on update cascade
-);
 
 create table roles(
     id int not null primary key auto_increment,
@@ -28,6 +19,25 @@ create table proyectos(
     objetivo longtext
 );
 
+create table usuarios(
+	id int not null primary key auto_increment,
+    nombre varchar(50),
+    apellidos varchar(50),
+    f_nacimiento date,
+    correo varchar(50),
+    id_rol int,
+    contraseña varchar(256),
+    foreign key (id_rol) references roles (id) on delete cascade on update cascade
+);
+
+create table perfiles_usuarios(
+ id int not null primary key auto_increment,
+ id_usuario int not null,
+ foto_perfil longblob,
+ foto_portada longblob,
+ foreign key (id_usuario) references usuarios (id) on delete cascade on update cascade
+);
+
 create table proyectos_usuarios(
     id int not null primary key auto_increment,
     id_usuario int not null,
@@ -37,3 +47,9 @@ create table proyectos_usuarios(
 );
 
 insert into roles (rol) values ('Publicador'), ('Visualizador'), ('Administrador');
+
+
+
+
+select * from usuarios;
+select * from perfiles_usuarios;
