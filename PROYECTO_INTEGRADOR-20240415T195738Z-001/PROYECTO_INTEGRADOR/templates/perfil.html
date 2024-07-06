@@ -1,185 +1,178 @@
 {% extends 'plantilla.html' %}
 
-{% block body %} 
+{% block body %}
 <style>
-  .custom-file-input {
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-      border: 1px solid #ccc;
-      background-color: #f9f9f9;
-      padding: 8px 12px;
-      cursor: pointer;
-      border-radius: 4px;
-  }
+    .custom-file-input {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
 
-  .custom-file-input input[type="file"] {
-      position: absolute;
-      font-size: 100px;
-      opacity: 0;
-      right: 0;
-      top: 0;
-      cursor: pointer;
-  }
-  .custom-file-input::file-selector-button {
-      background-color: #4a5568;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-  }
+    .custom-file-input input[type="file"] {
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+    }
+    .custom-file-input::file-selector-button {
+        background-color: #4a5568;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Estilo adicional para la vista previa de la imagen */
+    #preview-container {
+        display: none; /* Oculta el contenedor por defecto */
+        margin-top: 10px;
+    }
 </style>
 
 <div class="min-h-screen flex flex-col">
-  <div class="flex-1">
-      <img src="https://www.nueva-iso-14001.com/wp-content/uploads/2020/05/sostenibilidad.jpg" alt="Imagen 1" class="imagen-con-mejor-calidad w-full h-96 object-cover object-center"> 
-  </div>
-  <div class="bg-white p-8 rounded-t-lg  flex-1">
-      <div class="flex justify-center -mt-6"> 
-          <img src="https://i.pinimg.com/564x/ca/de/92/cade92fc079584a143d6a04a36371717.jpg" alt="Imagen con mejor calidad" class="imagen-con-mejor-calidad w-48 h-48 rounded-full border-4 border-white mt-[-2rem]"> <!-- Ajustar el tamaño de la imagen de perfil (w-48 h-48) y el margen superior -->
-      </div>
-      <div class="text-center mt-6">
-          <div class="text-center mt-6">
-              <h2 class="text-4xl font-semibold text-gray-800">Monica Resendiz Garcia</h2>
-              <p class="text-xl text-gray-600 mt-2">MonicaGarcia50@gmail.com</p>
-              <p class="text-sm text-gray-600">Querétaro, México</p>
-              <div class="flex justify-center mb-4 p-2">
-                  <a href="https://api.whatsapp.com/send?phone=4481299712" target="_blank" class="text-gray-700 mr-4">
-                      <i class="fab fa-whatsapp fa-2x"></i>
-                  </a>
-                  <a href="mailto:121038582@upq.edu.mx" class="text-gray-700">
-                      <i class="fas fa-envelope fa-2x"></i>
-                  </a>
-              </div>
-              <div class="flex justify-center mt-6">
-                  <button id="editProfileBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Editar Perfil del Administrador</button>
-                  <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Cerrar Sesión</button>
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
-
-
-<!-- AQUI INICIA EL MODAL PARA EDITAR EL PERFIL DEL USUARIO -->
-<div id="editProfileModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-      <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+    <div class="flex-1">
+        <img src="data:image/jpeg;base64,{{ user_data['foto_portada'] }}" alt="Imagen 1" class="imagen-con-mejor-calidad w-full h-96 object-cover object-center"> 
     </div>
-    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden  transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-        <div class="sm:flex sm:items-start">
-          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">Editar Perfil</h3>
-            <div class="max-w-md mx-auto bg-white rounded-md overflow-hidden ">
-              <div class="p-4">
-                <h2 class="text-2xl font-semibold text-gray-800">Editar Perfil</h2>
-                <form action="#" method="POST" class="mt-4">
-                  <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-600">Nombre</label>
-                    <input type="text" id="name" name="name" value="Jimena Suarez Garcia" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                  </div>
-                  <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-600">Correo Electrónico</label>
-                    <input type="email" id="email" name="email" value="Jimena@gmail.com" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                  </div>
-                  <div class="mb-4">
-                    <label for="location" class="block text-sm font-medium text-gray-600">Ubicación</label>
-                    <input type="text" id="location" name="location" value="Querétaro, México" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                  </div>
-                  <div class="mb-4">
-                    <label for="profile-pic" class="block text-sm font-medium text-gray-600">Foto de Perfil</label>
-                    <div class="custom-file-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                        <input type="file" id="profile-pic" name="profile-pic" accept="image/*">
-                        <span>Seleccionar Archivo</span>
-                    </div>
-                  </div>
-                
-                  <div class="mb-4">
-                      <label for="cover-pic" class="block text-sm font-medium text-gray-600">Foto de Portada</label>
-                      <div class="custom-file-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                        <input type="file" id="cover-pic" name="cover-pic" accept="image/*">
-                        <span>Seleccionar Archivo</span>
-                      </div>
-                  </div>
-                  <div class="mt-6">
-                    <button type="submit" class="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">Guardar Cambios</button>
-                  </div>
-                  
-                </form>
-              </div>
-            </div>
-            
-          </div>
+    <div class="bg-white p-8 rounded-t-lg flex-1">
+        <div class="flex justify-center -mt-6"> 
+            <img src="data:image/jpeg;base64,{{ user_data['foto_perfil'] }}" alt="Imagen con mejor calidad" class="imagen-con-mejor-calidad w-48 h-48 rounded-full border-4 border-white mt-[-2rem]">
         </div>
-      </div>
-      <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-        <button id="closeEditProfileModalBtn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Cerrar</button>
-
-      </div>
+        <div class="text-center mt-6">
+            <h2 class="text-4xl font-semibold text-gray-800">{{ user_data['nombre'] }} {{ user_data['apellidos'] }}</h2>
+            <p class="text-xl text-gray-600 mt-2">{{ user_data['correo'] }}</p>
+            <div class="flex justify-center mb-4 p-2">
+                <a href="https://api.whatsapp.com/send?phone=4481299712" target="_blank" class="text-gray-700 mr-4">
+                    <i class="fab fa-whatsapp fa-2x"></i>
+                </a>
+                <a href="mailto:121038582@upq.edu.mx" class="text-gray-700">
+                    <i class="fas fa-envelope fa-2x"></i>
+                </a>
+            </div>
+            <div class="flex justify-center mt-6">
+                <button id="editProfileBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Editar Perfil</button>
+                <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Cerrar Sesión</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-<!-- CIERRE DEL MODAL -->
 
-
-<div class="flex justify-center items-center h-screen">
-  <div class="max-w-screen-xl bg-white rounded-lg shadow-2xl overflow-hidden">
-      <h1 class="text-4xl font-bold text-center m-8">Proyectos Registrados</h1>
-
-      <div class="flex">
-          <div class="w-1/2">
-              <div class="swiper my-4">
-                  <div class="swiper-wrapper">
-                      <div class="swiper-slide m-4">
-                          <img src="https://www.nueva-iso-14001.com/wp-content/uploads/2020/05/sostenibilidad.jpg" alt="Imagen del proyecto">
-                      </div>
-                  </div>
-                  <div class="swiper-button-prev"></div>
-                  <div class="swiper-button-next"></div>
-              </div>
-          </div>
-          <div class="w-1/2 p-8">
-              <h2 class="text-3xl font-bold mb-4">EcoEnergía</h2>
-              <p><strong>DESCRIPCIÓN:</strong></p>
-              <p class="text-sm text-center text-gray-700 mb-6">Buscar la implementación y promoción de tecnologías y prácticas energéticas sostenibles, aprovechando fuentes renovables como la solar, eólica, hidroeléctrica y biomasa, con el fin de reducir la huella de carbono y contribuir al desarrollo de comunidades más resistentes y responsables ambientalmente.</p>
-              <p><strong>OBJETIVO:</strong></p>
-              <p class="text-sm text-center text-gray-700 mb-6">Proporcionar soluciones de energía sostenible y renovable para reducir la dependencia de fuentes de energía no renovables y mitigar el impacto ambiental, promoviendo así un futuro más limpio y sostenible para las generaciones presentes y futuras</p>
-              <p><strong>NOMBRE DE LA EMPRESA:</strong></p>
-              <p class="text-sm text-center text-gray-700"><strong>EcoEnergía Innovadora</strong></p>
-              <p><strong>CONTACTOS DE LA EMPRESA:</strong></p>
-              <div class="flex justify-center mb-4">
-                  <a href="https://api.whatsapp.com/send?phone=4481299712" target="_blank" class="text-gray-700 mr-4">
-                      <i class="fab fa-whatsapp fa-2x"></i>
-                  </a>
-                  <a href="mailto:121038582@upq.edu.mx" class="text-gray-700">
-                      <i class="fas fa-envelope fa-2x"></i>
-                  </a>
-              </div>
-              <div class="text-center">
-                  <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="/PerfilProyecto">Ver más</a>
-              </div>
-          </div>
-      </div>
-  </div>
+<!-- Modal para editar el perfil del usuario -->
+<div id="editProfileModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">Editar Perfil</h3>
+                        <div class="max-w-md mx-auto bg-white rounded-md overflow-hidden ">
+                            <div class="p-4">
+                                <h2 class="text-2xl font-semibold text-gray-800">Editar Perfil</h2>
+                                <form action="{{ url_for('Perfil') }}" method="POST" enctype="multipart/form-data" class="mt-4">
+                                    <div class="mb-4">
+                                        <label for="name" class="block text-sm font-medium text-gray-600">Nombre</label>
+                                        <input type="text" id="name" name="name" value="{{ user_data['nombre'] }}" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="email" class="block text-sm font-medium text-gray-600">Correo Electrónico</label>
+                                        <input type="email" id="email" name="email" value="{{ user_data['correo'] }}" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="location" class="block text-sm font-medium text-gray-600">Ubicación</label>
+                                        <input type="text" id="location" name="location" value="{{ user_data['ubicacion'] }}" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="profile-pic" class="block text-sm font-medium text-gray-600">Foto de Perfil</label>
+                                        <div class="custom-file-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                            <input type="file" id="profile-pic" name="profile-pic" accept="image/*" onchange="previewProfilePic(event)">
+                                            <span>Elegir foto de perfil</span>
+                                        </div>
+                                        
+                                        <div id="profile-preview-container" class="hidden mt-2">
+                                            <img id="profile-preview-image" class="mt-2 mx-auto rounded-md shadow-md" src="#" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="cover-pic" class="block text-sm font-medium text-gray-600">Foto de Portada</label>
+                                        <div class="custom-file-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                            <input type="file" id="cover-pic" name="cover-pic" accept="image/*" onchange="previewCoverPic(event)">
+                                            <span>Elegir foto de portada</span>
+                                        </div>
+                                        
+                                        <div id="cover-preview-container" class="hidden mt-2">
+                                            <img id="cover-preview-image" class="mt-2 mx-auto rounded-md shadow-md" src="#" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                                        </div>
+                                    </div>
+                                    <div class="mt-6">
+                                        <button type="submit" class="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">Guardar Cambios</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button id="closeEditProfileModalBtn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- ESTE SCRIP FUNCIONA PARA EL MODAL -->
+
 <script>
-  const editProfileBtn = document.getElementById('editProfileBtn');
-  const closeEditProfileModalBtn = document.getElementById('closeEditProfileModalBtn');
-  const editProfileModal = document.getElementById('editProfileModal');
+document.getElementById('editProfileBtn').addEventListener('click', function() {
+    document.getElementById('editProfileModal').classList.remove('hidden');
+});
 
-  editProfileBtn.addEventListener('click', () => {
-      editProfileModal.classList.remove('hidden');
-  });
+document.getElementById('closeEditProfileModalBtn').addEventListener('click', function() {
+    document.getElementById('editProfileModal').classList.add('hidden');
+});
 
-  closeEditProfileModalBtn.addEventListener('click', () => {
-      editProfileModal.classList.add('hidden');
-  });
+function previewProfilePic(event) {
+    const preview = document.getElementById('profile-preview-image');
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = function() {
+        preview.src = reader.result;
+        document.getElementById('profile-preview-container').style.display = 'block'; 
+    }
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = "";
+        document.getElementById('profile-preview-container').style.display = 'none'; 
+    }
+}
+
+function previewCoverPic(event) {
+    const preview = document.getElementById('cover-preview-image');
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = function() {
+        preview.src = reader.result;
+        document.getElementById('cover-preview-container').style.display = 'block'; 
+    }
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = "";
+        document.getElementById('cover-preview-container').style.display = 'none'; 
+    }
+}
 </script>
 
-
-
-{% endblock %} 
+{% endblock %}
