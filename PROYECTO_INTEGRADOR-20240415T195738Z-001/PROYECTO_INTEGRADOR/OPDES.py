@@ -181,16 +181,44 @@ def VisualizadorProyectos():
         {
             'id': p[0],
             'nombre': p[1],
-            'nombreempresa': p[2],
-            'correo': p[3],
-            'telefono': p[4],
+            #'nombreempresa': p[2],
+            #'correo': p[3],
+            #'telefono': p[4],
             'imagen': base64.b64encode(p[5]).decode('utf-8') if p[5] else None,
-            'descripcion': p[6],
-            'objetivo': p[7]
+            #'descripcion': p[6],
+            #'objetivo': p[7]
         } for p in proyectosBD
     ]
 
     return render_template('VisualizadorProyectos.html', proyectos=proyectos)
+
+
+@app.route('/VisualizadorMasProyectos/<int:proyecto_id>')
+@login_required
+def VisualizadorMasProyectos(proyecto_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM proyectos WHERE id = %s', (proyecto_id,))
+    proyecto = cursor.fetchone()
+    cursor.close()
+
+    if proyecto:
+        proyecto_detalle = {
+            'id': proyecto[0],
+            'nombre': proyecto[1],
+            'nombreempresa': proyecto[2],
+            'correo': proyecto[3],
+            'telefono': proyecto[4],
+            'imagen': base64.b64encode(proyecto[5]).decode('utf-8') if proyecto[5] else None,
+            'descripcion': proyecto[6],
+            'objetivo': proyecto[7]
+        }
+        return render_template('VisualizadorMasProyectos.html', proyecto=proyecto_detalle)
+    else:
+        # Aquí puedes manejar el caso cuando no se encuentra el proyecto con ese ID
+        flash('Proyecto no encontrado.', 'error')
+        return redirect(url_for('VisualizadorProyectos'))
+
+
 
 
 
@@ -272,12 +300,6 @@ def Perfil():
     }
 
     return render_template('perfil.html', user_data=user_profile_data)
-
-
-
-
-
-
 
 
 
