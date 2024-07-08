@@ -112,7 +112,10 @@ def guardarRegistro():
         cursor.close()
 
         session['correo'] = Vcorreo
-        session['rol'] = Vrol
+        if Vrol == 1:
+            session['rol'] = 'Publicador'
+        elif Vrol == 2:
+            session['rol'] = 'Visualizador'
 
         if Vrol == 1 or Vrol == 2:
             return redirect(url_for('Visualizador'))
