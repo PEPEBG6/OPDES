@@ -8,17 +8,6 @@ create table roles(
     rol varchar(100)
 );
 
-create table proyectos(
-    id int not null primary key auto_increment,
-    nombre varchar(100),
-    nombre_empresa varchar(100),
-    correo_electronico varchar(100),
-    telefono varchar(10),
-    foto longblob,
-    descripcion longtext,
-    objetivo longtext
-);
-
 create table usuarios(
 	id int not null primary key auto_increment,
     nombre varchar(50),
@@ -28,6 +17,18 @@ create table usuarios(
     id_rol int,
     contraseña varchar(256),
     foreign key (id_rol) references roles (id) on delete cascade on update cascade
+);
+
+
+create table proyectos(
+    id int not null primary key auto_increment,
+    nombre varchar(100),
+    nombre_empresa varchar(100),
+    correo_electronico varchar(100),
+    telefono varchar(10),
+    foto longblob,
+    descripcion longtext,
+    objetivo longtext
 );
 
 create table perfiles_usuarios(
