@@ -271,13 +271,13 @@ def Perfil():
             WHERE correo=%s
         ''', (nombre, correo, user_email))
         
-        # Verificar si ya existe una fila en perfiles_usuarios para el usuario actual
+        
         cursor.execute('''
             SELECT id FROM perfiles_usuarios WHERE id_usuario=(SELECT id FROM usuarios WHERE correo=%s)
         ''', (user_email,))
         profile_user_exists = cursor.fetchone()
 
-        # Si la fila existe, actualiza; si no, inserta una nueva fila
+      
         if profile_user_exists:
             if foto_perfil:
                 cursor.execute('''
@@ -384,7 +384,6 @@ def eliminarProyecto(proyecto_id):
 
 
 
-#Ruta para editar proyecto.
 #Ruta para editar proyecto.
 @app.route('/editarProyecto/<int:proyecto_id>', methods=['GET', 'POST'])
 @login_required
