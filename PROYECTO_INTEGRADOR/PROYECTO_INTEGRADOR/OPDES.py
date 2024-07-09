@@ -48,7 +48,6 @@ def save_photo(file):
         return file.read()
     return None
 
-
 #Ruta de inicializacion.
 @app.route('/')
 def Inicio():
@@ -93,6 +92,8 @@ def Login():
 def Registro():
     return render_template('Registrarse.html')
 
+
+#Ruta para registrar usuario.
 @app.route('/guardarRegistro', methods=['POST'])
 def guardarRegistro():
     if request.method == 'POST':
@@ -134,6 +135,9 @@ def guardarRegistro():
 def Registro_Proyecto():
     return render_template('Registro_Proyecto.html')
 
+
+
+#Ruta para guardar proyecto.
 @app.route('/guardarProyecto', methods=['POST'])
 @login_required
 def guardarProyecto():
@@ -153,9 +157,26 @@ def guardarProyecto():
             return redirect(url_for('Registro_Proyecto'))
 
         cursor = mysql.connection.cursor()
-        cursor.execute('INSERT INTO proyectos (nombre, nombre_empresa, correo_electronico, telefono, foto, descripcion, objetivo) VALUES (%s, %s, %s, %s, %s, %s, %s)', 
-                    (Vnombre, Vnombreempresa, Vcorreo, Vtelefono, imagen, Vdescripcion, Vobjetivo))
+        cursor.execute('''
+            INSERT INTO proyectos (nombre, nombre_empresa, correo_electronico, telefono, foto, descripcion, objetivo)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ''', (Vnombre, Vnombreempresa, Vcorreo, Vtelefono, imagen, Vdescripcion, Vobjetivo))
         mysql.connection.commit()
+
+        
+        id_proyecto = cursor.lastrowid
+
+        
+        cursor.execute('SELECT id FROM usuarios WHERE correo = %s', (session['correo'],))
+        id_usuario = cursor.fetchone()[0]
+
+        
+        cursor.execute('''
+            INSERT INTO proyectos_usuarios (id_usuario, id_proyecto)
+            VALUES (%s, %s)
+        ''', (id_usuario, id_proyecto))
+        mysql.connection.commit()
+
         cursor.close()
         flash('Project saved successfully!')
 
@@ -196,6 +217,8 @@ def VisualizadorProyectos():
     return render_template('VisualizadorProyectos.html', proyectos=proyectos)
 
 
+
+#Ruta para ver detalles de proyectos.
 @app.route('/VisualizadorMasProyectos/<int:proyecto_id>')
 @login_required
 def VisualizadorMasProyectos(proyecto_id):
@@ -235,10 +258,8 @@ def Perfil():
     user_email = session.get('correo')
 
     if request.method == 'POST':
-        # Process the form data
         nombre = request.form['name']
         correo = request.form['email']
-        ubicacion = request.form['location']
         
         foto_perfil = save_photo(request.files.get('profile-pic'))
         foto_portada = save_photo(request.files.get('cover-pic'))
@@ -249,39 +270,43 @@ def Perfil():
             SET nombre=%s, correo=%s
             WHERE correo=%s
         ''', (nombre, correo, user_email))
-
-       
-        if foto_perfil:
-            cursor.execute('''
-                UPDATE perfiles_usuarios 
-                SET foto_perfil=%s
-                WHERE id_usuario=(SELECT id FROM usuarios WHERE correo=%s)
-            ''', (foto_perfil, user_email))
         
-        if foto_portada:
-            cursor.execute('''
-                UPDATE perfiles_usuarios 
-                SET foto_portada=%s
-                WHERE id_usuario=(SELECT id FROM usuarios WHERE correo=%s)
-            ''', (foto_portada, user_email))
-
+        
         cursor.execute('''
-            INSERT INTO perfiles_usuarios (id_usuario, ubicacion, foto_perfil, foto_portada)
-            VALUES ((SELECT id FROM usuarios WHERE correo=%s), %s, %s, %s)
-            ON DUPLICATE KEY UPDATE
-                ubicacion=VALUES(ubicacion),
-                foto_perfil=COALESCE(VALUES(foto_perfil), foto_perfil),
-                foto_portada=COALESCE(VALUES(foto_portada), foto_portada)
-        ''', (user_email, ubicacion, foto_perfil, foto_portada))
+            SELECT id FROM perfiles_usuarios WHERE id_usuario=(SELECT id FROM usuarios WHERE correo=%s)
+        ''', (user_email,))
+        profile_user_exists = cursor.fetchone()
+
+      
+        if profile_user_exists:
+            if foto_perfil:
+                cursor.execute('''
+                    UPDATE perfiles_usuarios 
+                    SET foto_perfil=%s
+                    WHERE id_usuario=(SELECT id FROM usuarios WHERE correo=%s)
+                ''', (foto_perfil, user_email))
+            
+            if foto_portada:
+                cursor.execute('''
+                    UPDATE perfiles_usuarios 
+                    SET foto_portada=%s
+                    WHERE id_usuario=(SELECT id FROM usuarios WHERE correo=%s)
+                ''', (foto_portada, user_email))
+        else:
+            cursor.execute('''
+                INSERT INTO perfiles_usuarios (id_usuario, foto_perfil, foto_portada)
+                VALUES ((SELECT id FROM usuarios WHERE correo=%s), %s, %s)
+            ''', (user_email, foto_perfil, foto_portada))
 
         mysql.connection.commit()
         cursor.close()
+
         flash('Perfil actualizado exitosamente.')
         return redirect(url_for('Perfil'))
 
     cursor = mysql.connection.cursor()
     cursor.execute('''
-        SELECT u.nombre, u.apellidos, u.correo, p.ubicacion, p.foto_perfil, p.foto_portada
+        SELECT u.nombre, u.apellidos, u.correo, p.foto_perfil, p.foto_portada
         FROM usuarios u
         LEFT JOIN perfiles_usuarios p ON u.id = p.id_usuario
         WHERE u.correo = %s
@@ -297,12 +322,136 @@ def Perfil():
         'nombre': user_data[0],
         'apellidos': user_data[1],
         'correo': user_data[2],
-        'ubicacion': user_data[3],
-        'foto_perfil': base64.b64encode(user_data[4]).decode('utf-8') if user_data[4] else None,
-        'foto_portada': base64.b64encode(user_data[5]).decode('utf-8') if user_data[5] else None
+        'foto_perfil': base64.b64encode(user_data[3]).decode('utf-8') if user_data[3] else None,
+        'foto_portada': base64.b64encode(user_data[4]).decode('utf-8') if user_data[4] else None
     }
 
     return render_template('perfil.html', user_data=user_profile_data)
+
+
+
+#Ruta par ver mis proyectos.
+@app.route('/Perfil_Proyectos')
+@login_required
+def Perfil_Proyectos():
+    
+    user_email = session.get('correo')
+
+    
+    cursor = mysql.connection.cursor()
+    cursor.execute('''
+        SELECT p.id, p.nombre, p.descripcion, p.objetivo, p.foto
+        FROM proyectos p
+        INNER JOIN proyectos_usuarios pu ON p.id = pu.id_proyecto
+        INNER JOIN usuarios u ON pu.id_usuario = u.id
+        WHERE u.correo = %s
+    ''', (user_email,))
+    proyectosBD = cursor.fetchall()
+    cursor.close()
+
+    
+    proyectos = [
+        {
+            'id': p[0],
+            'nombre': p[1],
+            'descripcion': p[2],
+            'objetivo': p[3],
+            'imagen': base64.b64encode(p[4]).decode('utf-8') if p[4] else None,
+        } for p in proyectosBD
+    ]
+
+    return render_template('Perfil_Proyectos.html', proyectos=proyectos)
+
+
+
+#Ruta para eliminar proyecto.
+@app.route('/eliminarProyecto/<int:proyecto_id>', methods=['POST'])
+@login_required
+def eliminarProyecto(proyecto_id):
+    user_email = session.get('correo')
+
+    cursor = mysql.connection.cursor()
+    cursor.execute('''
+        DELETE p
+        FROM proyectos p
+        JOIN proyectos_usuarios pu ON p.id = pu.id_proyecto
+        JOIN usuarios u ON pu.id_usuario = u.id
+        WHERE p.id = %s AND u.correo = %s
+    ''', (proyecto_id, user_email))
+    mysql.connection.commit()
+    cursor.close()
+    return '', 204
+
+
+
+#Ruta para editar proyecto.
+@app.route('/editarProyecto/<int:proyecto_id>', methods=['GET', 'POST'])
+@login_required
+def editarProyecto(proyecto_id):
+    user_email = session.get('correo')
+
+    if request.method == 'POST':
+        nombre = request.form['nombre-proyecto']
+        nombreempresa = request.form['nombre-empresa']
+        correo = request.form['correo-empresa']
+        telefono = request.form['telefono-empresa']
+        descripcion = request.form['descripcion-proyecto']
+        objetivo = request.form['objetivo-proyecto']
+        
+        file = request.files.get('file-upload')
+        imagen = file.read() if file and file.filename else None
+
+        cursor = mysql.connection.cursor()
+        
+        if imagen:
+            cursor.execute('''
+                UPDATE proyectos p
+                JOIN proyectos_usuarios pu ON p.id = pu.id_proyecto
+                JOIN usuarios u ON pu.id_usuario = u.id
+                SET p.nombre=%s, p.nombre_empresa=%s, p.correo_electronico=%s, p.telefono=%s, p.descripcion=%s, p.objetivo=%s, p.foto=%s
+                WHERE p.id=%s AND u.correo=%s
+            ''', (nombre, nombreempresa, correo, telefono, descripcion, objetivo, imagen, proyecto_id, user_email))
+        else:
+            cursor.execute('''
+                UPDATE proyectos p
+                JOIN proyectos_usuarios pu ON p.id = pu.id_proyecto
+                JOIN usuarios u ON pu.id_usuario = u.id
+                SET p.nombre=%s, p.nombre_empresa=%s, p.correo_electronico=%s, p.telefono=%s, p.descripcion=%s, p.objetivo=%s
+                WHERE p.id=%s AND u.correo=%s
+            ''', (nombre, nombreempresa, correo, telefono, descripcion, objetivo, proyecto_id, user_email))
+
+        mysql.connection.commit()
+        cursor.close()
+        flash('Proyecto actualizado exitosamente.')
+        return redirect(url_for('Perfil_Proyectos'))
+
+    cursor = mysql.connection.cursor()
+    cursor.execute('''
+        SELECT p.nombre, p.nombre_empresa, p.correo_electronico, p.telefono, p.descripcion, p.objetivo, p.foto
+        FROM proyectos p
+        JOIN proyectos_usuarios pu ON p.id = pu.id_proyecto
+        JOIN usuarios u ON pu.id_usuario = u.id
+        WHERE p.id = %s AND u.correo = %s
+    ''', (proyecto_id, user_email))
+    proyecto = cursor.fetchone()
+    cursor.close()
+
+    if not proyecto:
+        flash('Proyecto no encontrado.', 'error')
+        return redirect(url_for('Perfil_Proyectos'))
+
+    proyecto_data = {
+        'id': proyecto_id,
+        'nombre': proyecto[0],
+        'nombre_empresa': proyecto[1],
+        'correo': proyecto[2],
+        'telefono': proyecto[3],
+        'descripcion': proyecto[4],
+        'objetivo': proyecto[5],
+        'imagen': base64.b64encode(proyecto[6]).decode('utf-8') if proyecto[6] else None
+    }
+
+    return render_template('editarProyecto.html', proyecto=proyecto_data)
 
 
 
@@ -318,15 +467,7 @@ def VisualizadorNotificaciones():
 def Notificaciones():
     return render_template('Notificaciones.html')
 
-@app.route('/PerfilProyecto')
-@login_required
-def PerfilProyecto():
-    return render_template('Proyectoperfil.html')
 
-@app.route('/Perfil_Proyectos')
-@login_required
-def Perfil_Proyectos():
-    return render_template('Perfil_Proyectos.html')
 
 @app.route('/CerrarSesion')
 @login_required
