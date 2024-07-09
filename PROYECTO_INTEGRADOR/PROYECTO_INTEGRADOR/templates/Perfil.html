@@ -57,7 +57,9 @@
             </div>
             <div class="flex justify-center mt-6">
                 <button id="editProfileBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">Editar Perfil</button>
-                <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Cerrar Sesión</button>
+                {% if session['rol'] == 'Publicador' %}
+                     <a href="{{ url_for('Perfil_Proyectos') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Mis Proyectos</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -86,10 +88,6 @@
                                     <div class="mb-4">
                                         <label for="email" class="block text-sm font-medium text-gray-600">Correo Electrónico</label>
                                         <input type="email" id="email" name="email" value="{{ user_data['correo'] }}" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="location" class="block text-sm font-medium text-gray-600">Ubicación</label>
-                                        <input type="text" id="location" name="location" value="{{ user_data['ubicacion'] }}" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                     </div>
                                     <div class="mb-4">
                                         <label for="profile-pic" class="block text-sm font-medium text-gray-600">Foto de Perfil</label>

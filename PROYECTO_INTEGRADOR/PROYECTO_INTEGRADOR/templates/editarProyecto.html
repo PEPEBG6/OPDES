@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Proyecto - OPDES</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-green-50">
+
+<div class="container mx-auto py-12">
+    <div class="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+        <div class="p-6">
+            <h1 class="text-3xl font-semibold text-gray-800 text-center">Editar Proyecto</h1>
+            <p class="mt-2 text-gray-600">Asegurate de Proporcionar la información adecuada.</p>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <div class="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+            <div class="p-6">
+                
+                <form action="/editarProyecto/{{ proyecto.id }}" method="post" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="nombre-proyecto" class="block text-sm font-medium text-gray-700">Nombre del Proyecto:</label>
+                        <input type="text" id="nombre-proyecto" name="nombre-proyecto" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border" value="{{ proyecto.nombre }}">
+                    </div>
+                    <div class="mb-4">
+                        <label for="nombre-empresa" class="block text-sm font-medium text-gray-700">Nombre de la Empresa:</label>
+                        <input type="text" id="nombre-empresa" name="nombre-empresa" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border" value="{{ proyecto.nombre_empresa }}">
+                    </div>
+                    <div class="mb-4">
+                        <label for="correo-empresa" class="block text-sm font-medium text-gray-700">Correo Electrónico de la Empresa:</label>
+                        <input type="text" id="correo-empresa" name="correo-empresa" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border" value="{{ proyecto.correo }}">
+                    </div>
+                    <div class="mb-4">
+                        <label for="telefono-empresa" class="block text-sm font-medium text-gray-700">Número Telefónico de la Empresa:</label>
+                        <input type="text" id="telefono-empresa" name="telefono-empresa" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border" value="{{ proyecto.telefono }}">
+                    </div>
+                    <div class="mb-4" id="file-drop-area">
+                        <label for="foto-portada" class="block text-sm font-medium text-gray-700">Foto de Portada del Proyecto:</label>
+                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                            <div class="space-y-1 text-center">
+                                <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Seleccionar archivo</span>
+                                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                </label>
+                                <p class="pl-1">o arrastra y suelta</p>
+                                <p class="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                                <!-- Aqui inicia el contenedor de la imagen -->
+                                <div id="preview-container" class="{{ 'hidden' if not proyecto.imagen else '' }}">
+                                    <img id="preview-image" class="mt-2 mx-auto rounded-md shadow-md" src="data:image/jpeg;base64,{{ proyecto.imagen }}" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="descripcion-proyecto" class="block text-sm font-medium text-gray-700">Descripción</label>
+                        <textarea id="descripcion-proyecto" name="descripcion-proyecto" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border">{{ proyecto.descripcion }}</textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="objetivo-proyecto" class="block text-sm font-medium text-gray-700">Objetivo del Proyecto</label>
+                        <textarea id="objetivo-proyecto" name="objetivo-proyecto" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md border">{{ proyecto.objetivo }}</textarea>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Actualizar Proyecto
+                        </button>
+                        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" onclick="history.back()">
+                            Cancelar
+                        </button>
+                        
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
