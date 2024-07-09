@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <title>OPDES</title>
     <style>
         .logo_barra{
@@ -37,6 +39,7 @@
 
 
 <body>
+
     <nav class="bg-white shadow-lg">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
@@ -145,6 +148,22 @@
         });
     });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            title: "{{ category }}",
+                            text: "{{ message }}",
+                            icon: "{{ 'error' if category == 'error' else 'success' if category == 'success' else 'info' }}"
+                        });
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        });
+    </script>
+    
 
     {% block body %}
 
