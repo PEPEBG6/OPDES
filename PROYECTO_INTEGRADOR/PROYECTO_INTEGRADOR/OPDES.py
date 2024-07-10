@@ -153,7 +153,7 @@ def guardarProyecto():
         if file and file.filename:
             imagen = file.read()
         else:
-            flash('No file selected or file not allowed')
+            flash('No file selected or file not allowed', 'error')
             return redirect(url_for('Registro_Proyecto'))
 
         cursor = mysql.connection.cursor()
@@ -178,9 +178,8 @@ def guardarProyecto():
         mysql.connection.commit()
 
         cursor.close()
-        flash('Project saved successfully!')
-
-    return redirect(url_for('VisualizadorProyectos'))
+        flash('Project saved successfully!', 'success')
+        return redirect(url_for('VisualizadorProyectos'))
 
 
 
